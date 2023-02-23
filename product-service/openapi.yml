@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  title: Product Service
+  description: Product Service API for managing products
+  contact:
+    email: troshko.evgeny@gmail.com
+  version: 1.0.0
+servers:
+  - url: https://zzvdqullrj.execute-api.eu-central-1.amazonaws.com/dev/
+tags:
+  - name: products
+    description: APIs for managing products
+paths:
+  /products:
+    get:
+      tags:
+        - products
+      summary: Get all products
+      operationId: getProductsList
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductList'
+              examples:
+                example1:
+                  value:
+                    - title: 'Product A'
+                      id: '1'
+                      description: 'This is product A'
+                      price: 9.99
+                      count: 11
+                    - title: 'Product B'
+                      id: '2'
+                      description: 'This is product B'
+                      price: 19.99
+                      count: 10
+        '500':
+          description: Error during getting products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value:
+                    message: 'An error occurred while getting the product.'
+  /products/{productId}:
+    get:
+      tags:
+        - products
+      summary: Get product by product ID
+      operationId: getProductsById
+      parameters:
+        - name: productId
+          in: path
+          description: 'The product ID that needs to be fetched. Use "1" for testing.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+              examples:
+                example1:
+                  value:
+                    title: 'Product A'
+                    id: '1'
+                    description: 'This is product A'
+                    price: 9.99
+                    count: 10
+        '500':
+          description: Error during getting product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value:
+                    message: 'An error occurred while getting the product.'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value:
+                    message: 'The product with ID 1 was not found.'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message that describes the error that occurred.
+      example:
+        message: 'An error occurred while getting products.'
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the product.
+          example: 'Product A'
+        id:
+          type: string
+          description: The unique identifier of the product.
+          example: '1'
+        description:
+          type: string
+          description: A description of the product.
+          example: 'This is product A'
+        price:
+          type: number
+          format: float
+          description: The price of the product.
+          example: 9.99
+        count:
+          type: number
+          format: integer
+          description: The count of the product.
+          example: 10
+      required:
+        - title
+        - id
+        - description
+        - price
+    ProductList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+      example:
+        - title: 'Product A'
+          id: '1'
+          description:
+      uniqueItems: true
+      additionalProperties: false
+      description: List of products
