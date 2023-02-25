@@ -16,6 +16,7 @@ Depending on your preferred package manager, follow the instructions below to de
 - Run `npx sls deploy` to deploy this stack to AWS
 
 ## Endpoints
+
 - Get all products: https://zzvdqullrj.execute-api.eu-central-1.amazonaws.com/dev/products
 - Get product by Id: https://zzvdqullrj.execute-api.eu-central-1.amazonaws.com/dev/products/p1
 
@@ -23,11 +24,11 @@ Depending on your preferred package manager, follow the instructions below to de
 
 In order to test the functions locally, run the following commands:
 
-- ```npm run local:get-product-by-id```
-- ```npm run local:get-products```
+- `npm run local:get-product-by-id`
+- `npm run local:get-products`
 
 Check the [sls invoke local command documentation](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/) for more information.
 
 ### Unit tests
 
-In order to run unit tests, run the ```npm run test```.
+In order to run unit tests, run the `npm run test`.
