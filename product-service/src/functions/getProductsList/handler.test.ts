@@ -1,3 +1,4 @@
+// TODO
 import { formatJSONResponse, formatJSONResponseError } from '@libs/api-gateway';
 import { getProductsList } from './handler';
 import { products } from '../../shared/data/products';
@@ -6,6 +7,8 @@ jest.mock('@libs/api-gateway', () => ({
   formatJSONResponse: jest.fn(),
   formatJSONResponseError: jest.fn(),
 }));
+
+const event = {};
 
 describe('getProductsList', () => {
   afterEach(() => {
@@ -18,7 +21,7 @@ describe('getProductsList', () => {
       body: JSON.stringify(products),
     };
     (formatJSONResponse as jest.Mock).mockReturnValue(expectedResponse);
-    const response = await getProductsList();
+    const response = await getProductsList(event);
     expect(response).toEqual(expectedResponse);
     expect(formatJSONResponse).toHaveBeenCalledWith(products);
     expect(formatJSONResponseError).not.toHaveBeenCalled();
@@ -35,7 +38,7 @@ describe('getProductsList', () => {
       throw new Error(errorMessage);
     });
     try {
-      await getProductsList();
+      await getProductsList(event);
     } catch (e) {
       expect(e).toEqual(expectedResponse);
       expect(formatJSONResponse).not.toHaveBeenCalled();
