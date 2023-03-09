@@ -1,18 +1,19 @@
 import { formatJSONResponse, formatJSONResponseError } from '@libs/api-gateway';
-import { products } from '../../shared/data/products';
+import { DbProductsService } from '../../shared/db/db-products.service';
 
-export const getProductsById = async event => {
+const dbService = new DbProductsService();
+
+export const getProductsById = async (event) => {
   try {
+    console.log('Event:', event)
     const productId = event?.pathParameters?.productId;
-    const product = await new Promise(resolve =>
-      setTimeout(
-        () => resolve(products.find(item => item.id === productId)),
-        100,
-      ),
-    );
+
+    const product = await dbService.getProductsById(productId);
+
     if (!product) {
       return formatJSONResponseError({ message: 'Product not found!' }, 404);
     }
+
     return formatJSONResponse(product);
   } catch (e) {
     return formatJSONResponseError({

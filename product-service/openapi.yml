@@ -47,6 +47,53 @@ paths:
                 example1:
                   value:
                     message: 'An error occurred while getting the product.'
+    post:
+      tags:
+        - products
+      summary: Add a new product
+      operationId: createProduct
+      requestBody:
+        description: The details of the product to be added.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+              examples:
+                example1:
+                  value:
+                    title: 'Product C'
+                    description: 'This is product C'
+                    price: 29.99
+                    count: 5
+                    id: '1'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value:
+                    message: 'Invalid request payload.'
+        '500':
+          description: Error during adding product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value:
+                    message: 'An error occurred while adding the product.'
   /products/{productId}:
     get:
       tags:
@@ -105,6 +152,31 @@ components:
           description: A message that describes the error that occurred.
       example:
         message: 'An error occurred while getting products.'
+    ProductInput:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the product.
+          example: 'Product input A'
+        description:
+          type: string
+          description: A description of the product.
+          example: 'This is product input A'
+        price:
+          type: number
+          format: float
+          description: The price of the product.
+          example: 9.99
+        count:
+          type: number
+          format: integer
+          description: The count of the product.
+          example: 10
+      required:
+        - title
+        - description
+        - price
     Product:
       type: object
       properties:
@@ -135,6 +207,7 @@ components:
         - id
         - description
         - price
+        - count
     ProductList:
       type: array
       items:

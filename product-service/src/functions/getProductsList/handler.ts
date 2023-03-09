@@ -1,11 +1,13 @@
 import { formatJSONResponse, formatJSONResponseError } from '@libs/api-gateway';
-import { products } from '../../shared/data/products';
+import { DbProductsService } from '../../shared/db/db-products.service';
 
-export const getProductsList = async () => {
+const dbService = new DbProductsService();
+
+export const getProductsList = async (event) => {
   try {
-    return await new Promise(resolve =>
-      setTimeout(() => resolve(formatJSONResponse(products)), 100),
-    );
+    console.log('Event:', event)
+    const products = await dbService.getProducts();
+    return formatJSONResponse(products);
   } catch (e) {
     return formatJSONResponseError({
       message: e.message,
