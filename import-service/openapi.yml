@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+  title: Import Service
+  description: Import Service API
+  contact:
+    email: troshko.evgeny@gmail.com
+  version: 1.0.0
+servers:
+  - url: https://e6w0un5hz3.execute-api.eu-central-1.amazonaws.com/dev/
+tags:
+  - name: import
+    description: APIs for import
+paths:
+  /import:
+    get:
+      tags:
+        - import
+      summary: Get signed url
+      operationId: importProductsFile
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: The name of imported file
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                example1:
+                  value: "https://uploaded-products.s3.eu-central-1.amazonaws.com/uploaded/name?otherParams"
+        '500':
+          description: Error during import
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value:
+                    message: 'An error occurred while import.'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message that describes the error that occurred.
+      example:
+        message: 'An error occurred while import.'
