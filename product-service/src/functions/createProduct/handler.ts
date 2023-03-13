@@ -9,6 +9,7 @@ const dbService = new DbProductsService();
 export const createProduct = async (event) => {
   try {
     console.log('Event:', event)
+
     const product: Product = JSON.parse(event.body);
 
     const validationMessages = validateProduct(product);
@@ -32,6 +33,8 @@ export const createProduct = async (event) => {
       201,
     );
   } catch (e) {
+    console.log('Error:', e.message)
+
     return formatJSONResponseError({
       message: e.message,
     });
