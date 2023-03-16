@@ -19,10 +19,12 @@ const serverlessConfiguration: AWS = {
       {
         Effect: 'Allow',
         Action: ['s3:*'],
-        Resource: [
-          'arn:aws:s3:::${self:custom.bucketName}',
-          'arn:aws:s3:::${self:custom.bucketName}/*',
-        ],
+        Resource: ['arn:aws:s3:::${self:custom.bucketName}', 'arn:aws:s3:::${self:custom.bucketName}/*'],
+      },
+      {
+        Effect: 'Allow',
+        Action: ['sqs:SendMessage'],
+        Resource: ['arn:aws:sqs:eu-central-1:471767202967:products-queue'],
       },
     ],
     apiGateway: {

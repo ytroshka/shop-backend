@@ -42,10 +42,7 @@ describe('getProductsList', () => {
     } catch (e) {
       expect(e).toEqual(expectedResponse);
       expect(formatJSONResponse).not.toHaveBeenCalled();
-      expect(formatJSONResponseError).toHaveBeenCalledWith(
-        { message: errorMessage },
-        500,
-      );
+      expect(formatJSONResponseError).toHaveBeenCalledWith({ message: errorMessage }, 500);
     }
     jest.restoreAllMocks();
   });

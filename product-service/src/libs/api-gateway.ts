@@ -9,10 +9,7 @@ export const formatJSONResponse = (response, statusCode = 200) => {
   };
 };
 
-export const formatJSONResponseError = (
-  response: Record<string, unknown>,
-  statusCode = 500,
-) => {
+export const formatJSONResponseError = (response: Record<string, unknown>, statusCode = 500) => {
   return {
     headers: {
       'Access-Control-Allow-Origin': '*',

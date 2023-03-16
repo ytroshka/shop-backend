@@ -2,10 +2,7 @@ import { importProductsFile } from './handler';
 
 jest.mock('aws-sdk', () => {
   const mockedS3 = {
-    getSignedUrlPromise: jest
-      .fn()
-      .mockReturnValueOnce('https://example.com')
-      .mockRejectedValueOnce(new Error('Error')),
+    getSignedUrlPromise: jest.fn().mockReturnValueOnce('https://example.com').mockRejectedValueOnce(new Error('Error')),
   };
 
   return {

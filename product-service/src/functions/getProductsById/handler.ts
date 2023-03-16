@@ -3,9 +3,9 @@ import { DbProductsService } from '../../shared/db/db-products.service';
 
 const dbService = new DbProductsService();
 
-export const getProductsById = async (event) => {
+export const getProductsById = async event => {
   try {
-    console.log('Event:', event)
+    console.log('Event:', event);
 
     const productId = event?.pathParameters?.productId;
 
@@ -17,7 +17,7 @@ export const getProductsById = async (event) => {
 
     return formatJSONResponse(product);
   } catch (e) {
-    console.log('Error:', e.message)
+    console.log('Error:', e.message);
 
     return formatJSONResponseError({
       message: e.message,
