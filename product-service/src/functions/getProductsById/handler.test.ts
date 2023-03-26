@@ -39,10 +39,7 @@ describe('getProductsById', () => {
     });
     expect(response).toEqual(expectedResponse);
     expect(formatJSONResponse).not.toHaveBeenCalled();
-    expect(formatJSONResponseError).toHaveBeenCalledWith(
-      { message: errorMessage },
-      404,
-    );
+    expect(formatJSONResponseError).toHaveBeenCalledWith({ message: errorMessage }, 404);
   });
 
   it('should reject with an error message if an error occurs', async () => {
@@ -60,10 +57,7 @@ describe('getProductsById', () => {
     } catch (e) {
       expect(e).toEqual(expectedResponse);
       expect(formatJSONResponse).not.toHaveBeenCalled();
-      expect(formatJSONResponseError).toHaveBeenCalledWith(
-        { message: errorMessage },
-        500,
-      );
+      expect(formatJSONResponseError).toHaveBeenCalledWith({ message: errorMessage }, 500);
     }
     jest.restoreAllMocks();
   });

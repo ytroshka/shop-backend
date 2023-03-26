@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk';
+import { DynamoDB } from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { Product, ProductItem } from '../model/product';
 import { StockItem } from '../model/stocks';
@@ -7,7 +7,7 @@ export class DbProductsService {
   private readonly dynamoDb: DocumentClient;
 
   constructor() {
-    this.dynamoDb = new AWS.DynamoDB.DocumentClient();
+    this.dynamoDb = new DynamoDB.DocumentClient();
   }
 
   async createProduct(product: Product): Promise<void> {
@@ -18,7 +18,7 @@ export class DbProductsService {
           id: product.id,
           title: product.title,
           description: product.description || '',
-          price: product.price,
+          price: +product.price,
         },
       };
 
@@ -26,7 +26,7 @@ export class DbProductsService {
         TableName: process.env.STOCKS_TABLE,
         Item: {
           product_id: product.id,
-          count: product.count,
+          count: +product.count,
         },
       };
 
@@ -56,9 +56,7 @@ export class DbProductsService {
         },
       };
 
-      const { Item: product } = await this.dynamoDb
-        .get(productsParams)
-        .promise();
+      const { Item: product } = await this.dynamoDb.get(productsParams).promise();
 
       if (!product) {
         return null;
@@ -70,9 +68,7 @@ export class DbProductsService {
           product_id: productId,
         },
       };
-      const { Item: stockItem } = await this.dynamoDb
-        .get(stocksParams)
-        .promise();
+      const { Item: stockItem } = await this.dynamoDb.get(stocksParams).promise();
 
       return {
         ...(product as ProductItem),
@@ -93,17 +89,11 @@ export class DbProductsService {
         TableName: process.env.STOCKS_TABLE,
       };
 
-      const { Items: products } = await this.dynamoDb
-        .scan(productsParams)
-        .promise();
-      const { Items: stocks } = await this.dynamoDb
-        .scan(stocksParams)
-        .promise();
+      const { Items: products } = await this.dynamoDb.scan(productsParams).promise();
+      const { Items: stocks } = await this.dynamoDb.scan(stocksParams).promise();
 
       return (products as ProductItem[]).map(product => {
-        const stockItem = (stocks as StockItem[]).find(
-          stock => stock.product_id === product.id,
-        );
+        const stockItem = (stocks as StockItem[]).find(stock => stock.product_id === product.id);
         return {
           ...product,
           count: stockItem.count,

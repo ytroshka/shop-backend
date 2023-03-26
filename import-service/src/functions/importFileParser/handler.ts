@@ -1,4 +1,4 @@
-import { S3 } from 'aws-sdk';
+import { S3, SQS } from 'aws-sdk';
 import { S3Event } from 'aws-lambda';
 import csv from 'csv-parser';
 
@@ -6,6 +6,8 @@ export const importFileParser = async (event: S3Event): Promise<number> => {
   try {
     console.log('Event:', event);
     const s3 = new S3({ region: 'eu-central-1' });
+    const sqs = new SQS({ region: 'eu-central-1' });
+
     const bucket = process.env.BUCKET;
 
     const [record] = event.Records;
@@ -21,7 +23,12 @@ export const importFileParser = async (event: S3Event): Promise<number> => {
     const stream = s3.getObject(params).createReadStream().pipe(csv());
 
     for await (const data of stream) {
-      console.log(data);
+      await sqs
+        .sendMessage({
+          QueueUrl: 'https://sqs.eu-central-1.amazonaws.com/471767202967/products-queue',
+          MessageBody: JSON.stringify(data),
+        })
+        .promise();
     }
 
     console.log('Finish:', key);

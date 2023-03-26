@@ -2,13 +2,13 @@ import { Product } from '../model/product';
 
 export const validateProduct = (product: Product): string[] => {
   const messages: string[] = [];
-  if (!isCountValid(product.count)) {
+  if (!isCountValid(+product.count)) {
     messages.push('Count should be non negative integer');
   }
   if (!product.title) {
     messages.push('Title is required');
   }
-  if (!isPriceValid(product.price)) {
+  if (!isPriceValid(+product.price)) {
     messages.push('Price should be positive number');
   }
   return messages;

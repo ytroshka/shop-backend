@@ -32,7 +32,7 @@ paths:
                 type: string
               examples:
                 example1:
-                  value: "https://uploaded-products.s3.eu-central-1.amazonaws.com/uploaded/name?otherParams"
+                  value: 'https://uploaded-products.s3.eu-central-1.amazonaws.com/uploaded/name?otherParams'
         '500':
           description: Error during import
           content:

@@ -1,6 +1,5 @@
 import { formatJSONResponse, formatJSONResponseError } from '@libs/api-gateway';
 import { S3 } from 'aws-sdk';
-import * as console from 'console';
 
 export const importProductsFile = async event => {
   try {
